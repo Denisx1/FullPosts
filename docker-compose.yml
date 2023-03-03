@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  client:
+    build: ./client
+    restart: always
+    volumes:
+      - /app/node_modules
+      - "./client:/app"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    # stdin_open: true
+    # tty: true
+  server:
+    build: ./server
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    ports:
+      - "5000:5000"
+    environment:
+      DB_USER: fullPosts
+      DB_PASSWORD: fulPosts123
+      DB_NAME: mern_fullPosts
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongodb:/data/db
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - "8888:8080"
+volumes:
+  mongodb:
