@@ -94,7 +94,7 @@ export const getMyPosts = async (req, res) => {
 export const removePost = async (req, res) => {
   try {
     const post = await Post.findByIdAndDelete(req.params.id);
-    const deleteComment = await Post.findByIdAndUpdate(req.params.id,{
+    await Post.findByIdAndUpdate(req.params.id,{
       $pull:{
         comments: req.params.id
       }

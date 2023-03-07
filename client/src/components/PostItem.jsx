@@ -17,13 +17,13 @@ export const PostItem = ({ post }) => {
     <Link to={POST_ONE_PAGE + "/" + post._id}>
       <div className="flex flex-col basis-1/4 flex-grow">
         <div
-          className={post.imgUrl ? "flex rounded-sm h-80" : "flex rounded-sm"}
+          className={post.imgUrl ? "flex rounded-3xl h-80" : "flex rounded-sm"}
         >
           {post.imgUrl && (
             <img
               src={process.env.REACT_APP_API_URL.slice(0, -3) + post.imgUrl}
               alt="img"
-              className="object-cover w-full"
+              className="object-cover w-full rounded-2xl"
             />
           )}
         </div>
@@ -34,7 +34,9 @@ export const PostItem = ({ post }) => {
           </div>
         </div>
         <div className=" text-white text-xl">{post.title}</div>
-        <p className="text-white opacity-50 text-xs pt-4 line-clamp-3">{post.text}</p>
+        <p className="text-white opacity-50 text-s pt-4 line-clamp-3">
+          {post.text}
+        </p>
         <div className="flex gap-3 items-center mt-2">
           <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
             <AiFillEye />

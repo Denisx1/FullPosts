@@ -17,10 +17,10 @@ import {
 
 export const CommentItem = ({ cmt }) => {
   const history = useHistory();
-  const role = useSelector(checkRole);
+  const {role} = useSelector(state=> state.auth.user);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const {loading} = useSelector(state=> state.comment)
+
   const avatar = cmt.comment.trim().toUpperCase().split("").slice(0, 2);
   const deleteCommentHandler = () => {
     dispatch(deleteComment({ id, commentId: cmt._id }));
@@ -39,7 +39,6 @@ export const CommentItem = ({ cmt }) => {
   }, []);
 
   return (
-    
     <div className="flex items-center gap-3 mb-2">
       <div className="flex items-center justify-center shrink-0 rounded-full w-10 h-10 bg-blue-300 text-sm">
         {avatar}

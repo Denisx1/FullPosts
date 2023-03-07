@@ -6,9 +6,9 @@ import { useSelector } from "react-redux";
 import { checkIsAuth, checkRole } from "../redux/feautures/auth/authSlice";
 
 const AppRouter = () => {
+
   const isAuth = useSelector(checkIsAuth);
   const role = useSelector(checkRole);
-
 
   return (
     <Switch>
@@ -16,7 +16,7 @@ const AppRouter = () => {
         authRoutes.map(({ path, Component }) => (
           <Route key={path} path={path} component={Component} exact />
         ))}
-      {role === ADMIN &&
+      {role &&
         adminRoute.map(({ path, Component }) => (
           <Route key={path} path={path} component={Component} exact />
         ))}

@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
-    role: { type: String, default: "ADMIN" },
+    role: { type: String, default: "USER" },
   },
   { timestamps: true }
 );

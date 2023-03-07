@@ -1,29 +1,50 @@
-import React, { Children, useState } from "react";
-import { LayoutAdmin } from "../components/layoutAdmin";
+import React, { Children, useEffect, useState } from "react";
 import { DELETE_USER, ADMIN_PAGE } from "../const/index";
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteUser, updateUser } from "../redux/feautures/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteUser,
+  deleteUserfromLine,
+  removeUser,
+  updateUser,
+} from "../redux/feautures/auth/authSlice";
+import { toast } from "react-toastify";
 
 const AdminPage = () => {
-  const [username, setUsername] = useState('')
-  const [updateUserState, setUpdateUserState] = useState('')
-  const dispatch = useDispatch()
+  const [username, setUsername] = useState("");
+  const [updateUserState, setUpdateUserState] = useState("");
+  const status = useSelector((state) => state.auth.status);
+  const dispatch = useDispatch();
 
-  const deleteHandler = () =>{
-    dispatch(deleteUser(username))
-    setUsername('')
-  }
-  const updateHandler = () =>{
-    dispatch(updateUser(updateUserState))
-    setUpdateUserState('')
-  }
-  
+  const deleteHandler = () => {
+    if (!username) {
+      toast("Write Username");
+    } else {
+      dispatch(deleteUser(username));
+      setUsername("");
+    }
+  };
+  const updateHandler = () => {
+    if (!updateUserState) {
+      toast("Write Username");
+    } else {
+      dispatch(updateUser(updateUserState));
+      setUpdateUserState("");
+    }
+  };
+
+  useEffect(() => {
+    if (status) {
+      toast(status);
+    }
+    dispatch(removeUser());
+  }, [status]);
+
   return (
     <React.Fragment>
       <div className="flex mt-5">
         <ul className="flex flex-col gap-8">
-          <li>
+          <div className="flex flex-col items-center">
             <NavLink
               to={ADMIN_PAGE}
               href="/"
@@ -31,9 +52,22 @@ const AdminPage = () => {
             >
               Delete User
             </NavLink>
-            <input type="text" className="ml-5" placeholder="username" onChange={(e)=> setUsername(e.target.value)}/>
-            <button className="ml-5" onClick={deleteHandler}>Delete</button>
-          </li>
+            <input
+              type="text"
+              value={username}
+              className="ml-5"
+              placeholder="username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <div className="">
+              <button className="ml-5" onClick={deleteHandler}>
+                Delete
+              </button>
+              <button className="ml-5" onClick={deleteHandler}>
+                Delete
+              </button>
+            </div>
+          </div>
           <li>
             <NavLink
               to={ADMIN_PAGE}
@@ -42,8 +76,16 @@ const AdminPage = () => {
             >
               Update Role User
             </NavLink>
-            <input type="text" className="ml-5" placeholder="Update to manager" onChange={(e)=> setUpdateUserState(e.target.value)}/>
-            <button className="ml-5" onClick={updateHandler}>Update</button>
+            <input
+              type="text"
+              value={updateUserState}
+              className="ml-5"
+              placeholder="Update to manager"
+              onChange={(e) => setUpdateUserState(e.target.value)}
+            />
+            <button className="ml-5" onClick={updateHandler}>
+              Update
+            </button>
           </li>
         </ul>
       </div>

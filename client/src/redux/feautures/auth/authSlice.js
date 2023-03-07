@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+import { ADMIN } from "../../../const";
 import axios from "../../../utils/axios";
+
 const initialState = {
   user: null,
   token: null,
   isLoading: false,
   status: null,
-  role: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -89,8 +89,10 @@ export const authSlice = createSlice({
       state.token = null;
       state.isLoading = false;
       state.status = null;
-      state.role = null;
     },
+    removeUser: (state)=>{
+      state.status = null;
+    }
   },
   extraReducers: {
     //RegisterUser
@@ -103,6 +105,7 @@ export const authSlice = createSlice({
       state.status = action.payload.message;
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.role = action.payload?.newUser.role;
     },
     [registerUser.rejected]: (state, action) => {
       state.status = action.payload.message;
@@ -118,6 +121,7 @@ export const authSlice = createSlice({
       state.status = action.payload.message;
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.role = action.payload?.user.role;
     },
     [loginUser.rejected]: (state, action) => {
       state.status = action.payload.message;
@@ -146,7 +150,7 @@ export const authSlice = createSlice({
     },
     [deleteUser.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.status = null;
+      state.status = action.payload.message;
     },
     [deleteUser.rejected]: (state, action) => {
       state.status = action.payload.message;
@@ -167,8 +171,8 @@ export const authSlice = createSlice({
     },
   },
 });
-export const checkRole = (state) => state.auth.role;
+export const checkRole = (state) => Boolean(state.auth.role === ADMIN);
 export const checkIsAuth = (state) => Boolean(state.auth.token);
 
-export const { logout } = authSlice.actions;
+export const { logout, removeUser } = authSlice.actions;
 export default authSlice.reducer;

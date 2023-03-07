@@ -22,9 +22,9 @@ import { checkIsAuth, checkRole } from "../redux/feautures/auth/authSlice";
 const PostPage = () => {
   const [post, setPost] = useState({});
   const [comment, setComment] = useState("");
-  
+
   const isAuth = useSelector(checkIsAuth);
-  const role = useSelector(checkRole);
+  const admin = useSelector(checkRole);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const PostPage = () => {
 
   const removePostHandler = () => {
     try {
-      dispatch(removePost({id, author: post.author}));
+      dispatch(removePost({ id, author: post.author }));
       toast("Пост был удален");
       history.push(POSTS_PAGE);
     } catch (error) {
@@ -82,16 +82,12 @@ const PostPage = () => {
       <div className="flex gap-10 py-8">
         <div className="w-2/3">
           <div className="flex flex-col basis-1/4 flex-grow">
-            <div
-              className={
-                post?.imgUrl ? "flex rounded-sm h-80" : "flex rounded-sm"
-              }
-            >
+            <div className={post?.imgUrl ? "flex  h-80" : "flex rounded-sm"}>
               {post.imgUrl && (
                 <img
                   src={`http://localhost:5000/${post.imgUrl}`}
                   alt="img"
-                  className="object-cover w-full"
+                  className="object-cover w-full rounded-2xl"
                 />
               )}
             </div>
@@ -104,7 +100,7 @@ const PostPage = () => {
             </div>
           </div>
           <div className=" text-white text-xl">{post.title}</div>
-          <p className="text-white opacity-50 text-xs pt-4">{post.text}</p>
+          <p className="text-white opacity-50 text-s pt-4">{post.text}</p>
           <div className="flex gap-3 items-center mt-2 justify-between">
             <div className="flex gap-3 mt-4">
               <button className="flex items-center justify-center gap-2 text-xs text-white opacity-50">
@@ -115,26 +111,25 @@ const PostPage = () => {
                 <AiOutlineMessage /> <span>{post.comments?.length}</span>
               </button>
             </div>
-            {(user?._id === post.author || role === ADMIN) &&
-               (
-                <div className="flex gap-3 mt-4">
-                  <button className="flex items-center justify-center gap-2 text-white opacity-50">
-                    <Link to={EDIT_POST_PAGE + "/" + id}>
-                      <AiTwotoneEdit />
-                    </Link>
-                  </button>
-                  <button
-                    onClick={removePostHandler}
-                    className="flex items-center justify-center gap-2  text-white opacity-50"
-                  >
-                    <AiFillDelete />
-                  </button>
-                </div>
-              )}
+            {(user?._id === post.author ||  admin) && (
+              <div className="flex gap-3 mt-4">
+                <button className="flex items-center justify-center gap-2 text-white opacity-50">
+                  <Link to={EDIT_POST_PAGE + "/" + id}>
+                    <AiTwotoneEdit />
+                  </Link>
+                </button>
+                <button
+                  onClick={removePostHandler}
+                  className="flex items-center justify-center gap-2  text-white opacity-50"
+                >
+                  <AiFillDelete />
+                </button>
+              </div>
+            )}
           </div>
         </div>
-        <div className="w-1/3 p-8 bg-gray-700 flex flex-col-reverse gap-2 rounded-sm">
-          <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
+        <div className="w-1/3 p-8 bg-gray-700  flex flex-col-reverse gap-2 rounded-xl">
+          <form className="flex gap-2 " onSubmit={(e) => e.preventDefault()}>
             {isAuth ? (
               <>
                 <input
@@ -156,9 +151,9 @@ const PostPage = () => {
               <button>Что бы оставить коментарий зарегистрируйтесь</button>
             )}
           </form>
-          {comments.length>0? comments.map((cmt) => (
-            <CommentItem key={cmt._id} cmt={cmt}/>
-          )):'' }
+          {comments.length > 0
+            ? comments.map((cmt) => <CommentItem key={cmt._id} cmt={cmt} />)
+            : ""}
         </div>
       </div>
     </div>

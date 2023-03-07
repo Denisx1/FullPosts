@@ -19,7 +19,6 @@ export const createPost = createAsyncThunk(
     }
   }
 );
-
 export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
   try {
     const { data } = await axios.get("posts");
@@ -28,7 +27,6 @@ export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
     console.log(error);
   }
 });
-
 export const removePost = createAsyncThunk("/post/removePost ", async ({id, author}) => {
   try {
     const { data } = await axios.delete(`/posts/${id}/${author}`);
@@ -48,7 +46,6 @@ export const updatePost = createAsyncThunk(
     }
   }
 );
-
 export const postSlice = createSlice({
   name: "post",
   initialState,

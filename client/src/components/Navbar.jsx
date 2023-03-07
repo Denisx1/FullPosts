@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,7 +8,6 @@ import {
   NEW_POST,
   LOGIN_PAGE,
   ADMIN_PAGE,
-  ADMIN,
 } from "../const";
 import {
   checkIsAuth,
@@ -18,7 +17,7 @@ import {
 
 export const Navbar = () => {
   const isAuth = useSelector(checkIsAuth);
-  const role = useSelector(checkRole);
+  const admin = useSelector(checkRole);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -26,20 +25,22 @@ export const Navbar = () => {
   const activeStyles = {
     color: "white",
   };
+
   const logouthandler = () => {
     dispatch(logout());
     window.localStorage.removeItem("token");
     history.push(MAIN_PAGE);
     toast("Вы вышли из системы");
   };
+
   return (
     <div className="flex py-4 justify-evenly items-center">
-      <span className="flex justify-center items-center w-6 h-6 bg-gray-600 text-cx text-white  ronded-sm">
+      <span className="flex justify-center  items-center w-6 h-6 bg-gray-600 text-cx text-white ronded-3xl">
         <NavLink
           to={MAIN_PAGE}
           href="/"
           style={({ isActive }) => (isActive ? activeStyles : undefined)}
-          className="text-s text-gray-400 hover:text-white"
+          className="text-s text-gray-400 hover:text-white "
         >
           Главная
         </NavLink>
@@ -67,17 +68,22 @@ export const Navbar = () => {
               Добавить пост
             </NavLink>
           </li>
+          {admin && (
+            <li>
+              <NavLink
+                to={ADMIN_PAGE}
+                href="/"
+                style={(isActive) => (isActive ? activeStyles : undefined)}
+                className="text-s text-gray-400 hover:text-white"
+              >
+                Админ панель
+              </NavLink>
+            </li>
+          )}
         </ul>
       )}
-      {role === ADMIN && (
-        <div className="flex justify-center items-center bg-gray-600 text-xs text-white ronded-sm px-4 py-2">
-          <button>
-            <Link to={ADMIN_PAGE}>Admin</Link>
-          </button>
-        </div>
-      )}
 
-      <div className="flex justify-center items-center bg-gray-600 text-xs text-white ronded-sm px-4 py-2">
+      <div className="flex justify-center items-center bg-gray-600 text-xs text-white rounded px-4 py-2">
         {isAuth ? (
           <button onClick={logouthandler}>Выйти</button>
         ) : (
