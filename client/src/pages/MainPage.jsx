@@ -7,10 +7,10 @@ import { getAllPosts } from "../redux/feautures/post/postSlice";
 const MainPage = () => {
   const dispatch = useDispatch();
   const { posts, popularPosts } = useSelector((state) => state.post);
-  
+
   useEffect(() => {
     dispatch(getAllPosts());
-  },[dispatch]);
+  }, [dispatch]);
 
   if (!posts.length) {
     return (
@@ -21,7 +21,7 @@ const MainPage = () => {
   }
 
   return (
-    <div className="max-w-[900px] mx-auto py-10">
+    <div className=" mx-auto py-10">
       <div className="flex justify-between gap-8">
         <div className="flex flex-col gap-10 basis-4/5">
           {posts?.map((post, idx) => (

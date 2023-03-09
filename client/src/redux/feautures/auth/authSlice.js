@@ -56,30 +56,6 @@ export const getMe = createAsyncThunk("auth/getMe", async () => {
   }
 });
 
-export const deleteUser = createAsyncThunk(
-  "auth/deleteUser",
-  async (username) => {
-    try {
-      const { data } = await axios.delete(`/auth/${username}`, username);
-      return data;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-);
-
-export const updateUser = createAsyncThunk(
-  "auth/updateUser",
-  async (username) => {
-    try {
-      const { data } = await axios.put(`/auth/${username}`, username);
-      return data;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-);
-
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -90,9 +66,7 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.status = null;
     },
-    removeUser: (state)=>{
-      state.status = null;
-    }
+    
   },
   extraReducers: {
     //RegisterUser
@@ -143,36 +117,10 @@ export const authSlice = createSlice({
       state.status = action.payload.message;
       state.isLoading = false;
     },
-    // delete
-    [deleteUser.pending]: (state) => {
-      state.isLoading = true;
-      state.status = null;
-    },
-    [deleteUser.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.status = action.payload.message;
-    },
-    [deleteUser.rejected]: (state, action) => {
-      state.status = action.payload.message;
-      state.isLoading = false;
-    },
-    // update
-    [updateUser.pending]: (state) => {
-      state.isLoading = true;
-      state.status = null;
-    },
-    [updateUser.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.status = action.payload.message;
-    },
-    [updateUser.rejected]: (state, action) => {
-      state.status = action.payload.message;
-      state.isLoading = false;
-    },
   },
 });
 export const checkRole = (state) => Boolean(state.auth.role === ADMIN);
 export const checkIsAuth = (state) => Boolean(state.auth.token);
 
-export const { logout, removeUser } = authSlice.actions;
+export const { logout } = authSlice.actions;
 export default authSlice.reducer;

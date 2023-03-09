@@ -4,11 +4,12 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteUser,
-  deleteUserfromLine,
   removeUser,
   updateUser,
-} from "../redux/feautures/auth/authSlice";
+} from "../redux/feautures/users/userSlice";
 import { toast } from "react-toastify";
+import Logik from "../components/adminPanel/logicAdminPanel";
+import Component from "../components/adminPanel/componentAdminPanel";
 
 const AdminPage = () => {
   const [username, setUsername] = useState("");
@@ -41,55 +42,24 @@ const AdminPage = () => {
   }, [status]);
 
   return (
-    <React.Fragment>
-      <div className="flex mt-5">
-        <ul className="flex flex-col gap-8">
-          <div className="flex flex-col items-center">
-            <NavLink
-              to={ADMIN_PAGE}
-              href="/"
-              className="text-s text-gray-400 hover:text-white"
-            >
-              Delete User
-            </NavLink>
-            <input
-              type="text"
-              value={username}
-              className="ml-5"
-              placeholder="username"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <div className="">
-              <button className="ml-5" onClick={deleteHandler}>
-                Delete
-              </button>
-              <button className="ml-5" onClick={deleteHandler}>
-                Delete
-              </button>
-            </div>
-          </div>
-          <li>
-            <NavLink
-              to={ADMIN_PAGE}
-              href="/"
-              className="text-s text-gray-400 hover:text-white"
-            >
-              Update Role User
-            </NavLink>
-            <input
-              type="text"
-              value={updateUserState}
-              className="ml-5"
-              placeholder="Update to manager"
-              onChange={(e) => setUpdateUserState(e.target.value)}
-            />
-            <button className="ml-5" onClick={updateHandler}>
-              Update
-            </button>
-          </li>
-        </ul>
+    <div className=" mx-auto py-10">
+      <div className="flex justify-between gap-8">
+        <div className="flex flex-col gap-10 basis-3/5 bg-white">
+          <Component />
+        </div>
+        <div className="basis-1/5 bg-white">
+          <Logik
+            deleteHandler={deleteHandler}
+            updateHandler={updateHandler}
+            setUsername={setUsername}
+            setUpdateUserState={setUpdateUserState}
+            username={username}
+            updateUserState={updateUserState}
+            ADMIN_PAGE={ADMIN_PAGE}
+          />
+        </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

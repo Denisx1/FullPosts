@@ -6,6 +6,7 @@ import authRoute from "./routers/authRout.js";
 import postRoute from "./routers/postRout.js";
 import commentRoute from "./routers/commentRoute.js";
 import fileUpload from "express-fileupload";
+import userRouter from "./routers/userRout.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.static("uploads"));
 
 app.use("/api/auth", authRoute);
+app.use('/api/users', userRouter)
 app.use("/api/posts", postRoute);
 app.use("/api/comments", commentRoute);
 
